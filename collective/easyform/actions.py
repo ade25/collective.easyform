@@ -34,6 +34,7 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.utils import formataddr
 from logging import getLogger
+from plone import api
 from plone.namedfile.interfaces import INamedBlobFile
 from plone.namedfile.interfaces import INamedFile
 from plone.supermodel.exportimport import BaseHandler
@@ -247,8 +248,7 @@ class Mailer(Action):
         # Get From address
         from_addr = (
             from_addr or
-            site_props.getProperty('email_from_address') or
-            portal.getProperty('email_from_address')
+            api.portal.get_registry_record('plone.email_from_address')
         )
 
         if hasattr(self, 'senderOverride') and self.senderOverride:
